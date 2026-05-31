@@ -1,3 +1,6 @@
+import { existsSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
@@ -7,6 +10,8 @@ import { db, initDb } from './db.js';
 const app = express();
 const PORT = process.env.PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET || 'luxcar-dev-secret';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const distPath = join(__dirname, '..', 'dist');
 
 initDb();
 
@@ -259,6 +264,14 @@ app.patch('/api/admin/lots/:id/status', auth, adminOnly, (req, res) => {
   const lot = db.prepare(`${lotSelect} WHERE lots.id = ?`).get(req.params.id);
   res.json({ lot: mapLot(lot) });
 });
+
+if (existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(join(distPath, 'index.html'));
+  });
+}
 
 function mapLot(row) {
   return {
