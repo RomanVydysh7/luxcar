@@ -4,9 +4,9 @@
 **LuxCar** — веб-платформа для онлайн-аукціону преміальних автомобілів з реєстрацією користувачів, ставками, каталогом лотів та адміністративною панеллю.
 
 ## URL
-**Local Frontend URL:** [http://127.0.0.1:5173](http://127.0.0.1:5173)
+**Live URL:** [https://luxcar-yb0g.onrender.com](https://luxcar-yb0g.onrender.com)
 
-**Local API URL:** [http://127.0.0.1:4000](http://127.0.0.1:4000)
+**API Health Check:** [https://luxcar-yb0g.onrender.com/api/health](https://luxcar-yb0g.onrender.com/api/health)
 
 ---
 
@@ -121,36 +121,33 @@ web/
 
 ---
 
-## Запуск проєкту
+## Деплой на Render
 
-### 1. Встановити залежності
+Проєкт розгорнутий на платформі **Render** як **Web Service**. Один Node.js сервіс одночасно обслуговує Express API та production-збірку React з папки `dist`.
+
+### Build Command
 ```bash
-npm install
+npm install && npm run build
 ```
 
-### 2. Запустити frontend і backend
-```bash
-npm run dev
-```
-
-Після запуску:
-- Frontend: [http://127.0.0.1:5173](http://127.0.0.1:5173)
-- Backend API: [http://127.0.0.1:4000](http://127.0.0.1:4000)
-
-### 3. Зібрати production build
-```bash
-npm run build
-```
-
-### 4. Запустити тільки backend
+### Start Command
 ```bash
 npm start
 ```
+
+### Environment Variables
+```text
+NODE_ENV=production
+JWT_SECRET=luxcar-secret-2026
+```
+
+Після деплою проєкт доступний за адресою:
+[https://luxcar-yb0g.onrender.com](https://luxcar-yb0g.onrender.com)
 
 ---
 
 ## Примітки
 - SQLite база створюється автоматично при першому запуску backend.
 - Стартові лоти та admin-користувач додаються автоматично через seed-логіку.
-- Для коректної роботи frontend використовує proxy `/api` на `http://127.0.0.1:4000`.
+- У production frontend і backend працюють на одному Render-домені, а запити до API виконуються через шлях `/api`.
 - Файл бази даних не потрібно створювати вручну.
